@@ -1,0 +1,21 @@
+---
+kind: pipeline
+type: docker
+name: default
+
+steps:
+- name: set tags
+  image: busybox
+  commands:
+      - echo "$(date +%Y%m%d-%H%M%S),latest" > .tags
+
+- name: build image
+  image: plugins/docker
+  settings:
+    username:
+      from_secret: registry_username
+    password:
+      from_secret: registry_password
+    repo: registry.esav.fi/tools/python-selenium
+    registry: registry.esav.fi
+        
